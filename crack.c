@@ -20,9 +20,9 @@ int main(int argc, char **argv){
 	salt = (char*)malloc(2*sizeof(char));	
 	
 	f = fopen(argv[1],"r");	
-	for(i = 1 ; i < P_T ; i++){
-		fscanf(f,"%s",pass_s);	
-		memcpy(salt,pass_s,2);
+	while(fscanf(f,"%s",pass_s)!=EOF){
+	memcpy(salt,pass_s,2);
+	for(i = 1 ; i < P_T ; i++){		
 		if(pass!=NULL) free(pass);
 		if(c_pass!=NULL) free(c_pass);	
     		pass = (int*)malloc(i*sizeof(int));
@@ -34,14 +34,10 @@ int main(int argc, char **argv){
 			c_pass[j]=d[0];
 		}
 		j=0;
-		//printf("a %s\n",c_pass);
 		while(j!=-1){ 
 		    for(j = 0 ; j < D_T ; j++){ 
 		        pass[i - 1] = j;
-			c_pass[i -1] = d[j];		
-		        //for(k = 0 ; k < i ; k++) sprintf(c_pass,"%c",d[pass[k]]);
-			//printf("Passei aqui!\n");
-			//printf("teste %c %s\n",c_pass[0],c_pass);
+			c_pass[i -1] = d[j];
 			result = crypt(c_pass, salt);
 			ok = strcmp (result, pass_s);	
 			if(!ok){
@@ -65,8 +61,10 @@ int main(int argc, char **argv){
 		        }
 		    }
 		}
+	 	if(!ok)break;
 	
 	}
+}
 	fclose(f);
     return 0;
 }
