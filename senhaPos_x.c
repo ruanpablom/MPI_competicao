@@ -16,7 +16,7 @@ int senha_pos(int i,char *passs){
     int j=0,flag=0;
     int pass[i];
     char c_pass[] = "..........";
-    char d[] = "./abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    char d[] = "./abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     long pos_x,pos_xx,k=0;
     int x = 0;
     int y = D_T;
@@ -27,38 +27,44 @@ int senha_pos(int i,char *passs){
 
     printf("Digite a posição da senha: ");
     scanf("%li",&pos_x);
-    pos_xx=pos_x;
-    for(j=0;j<i;j++){
-        s[j]=0;
-        pass[j]=0;
-    }
-    pos_atual=pos_x;
-    while((pos_x/D_T) > 0){ 
-        pos_atual = pos_x;
-        while(pos_x/D_T > 0){ 
-            pos_x /=D_T;
-            x++;
+    for(j=0;j<i;j++)pass[j]=0;
+
+    int beg = 0;
+    long pos_aux = pos_xx = pos_x;
+    int abc,first=1;
+
+    while(1){
+        if((pos_aux/(D_T)) > 1 ){
+            beg++;
         }
-        s[i-x]++;
-        t[i-x]=d[s[i-x]];
-        //printf("%i\n",s[x]);
-        pos_x = pow(D_T,x); 
-        x=0;
-        r = pos_x;
-        pos_x = pos_x/D_T;
-        //printf("%i\n",pos_x);
+        while((int)(pos_aux/(D_T)) > (D_T)){
+            beg++;
+            pos_aux = pos_aux/(D_T);
+        }
+        if(beg==1) pos_aux =(int)(pos_aux/(D_T));
+
+        printf("pos: %d\n",beg);
+        if(beg!=0){
+            abc = (pos_xx - pow((D_T),beg))/pow((D_T),beg);
+            printf("%i\n",abc);
+            if(first){
+                printf("letra: %c\n",d[abc+1]);
+                first=0;
+            }
+            else printf("letra: %c\n",d[abc]);
+        }else{
+            printf("letra: %c\n",d[pos_xx-1]);
+            break;
+        }
+        if(beg==1)  pos_xx = pos_x - (D_T)*((int)(pos_x/(D_T))); 
+        else pos_xx = pos_xx - pow((D_T-1),beg); 
+        beg = 0;
     }
-    printf("%i %i %i\n",pos_x,pos_atual,pos_atual-(pos_x*D_T));
-    if(r!=0)t[i-1] = d[pos_x-pos_atual];
-    else t[i-1]= d[pos_xx-1];
-    printf("%s\n",t);
-    pos_x=pos_xx; 
     while(j!=-1){ 
-        for(j = 0 ; j < D_T-1 ; j++){
+        for(j = 0 ; j < D_T ; j++){
             pass[i - 1] = j;
             c_pass[i - 1]=d[j];
             k++;
-            //printf("%i %i\n",k,pos_x);
             if(k == pos_x){
                 flag = 1;
                 memcpy(passs,c_pass,i);
@@ -83,6 +89,6 @@ int senha_pos(int i,char *passs){
         }
     }
     //printf("%s\n",c_pass);
-    
+
     return 0;
 }
