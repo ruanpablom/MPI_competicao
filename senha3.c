@@ -1,23 +1,10 @@
+#define _GNU_SOURCE
+#include<unistd.h>
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<crypt.h>
 
-/*int main(){
-  int j;
-  unsigned long int qtd = lpow(D_T,P_T);
-  unsigned long int s = qtd/MAQ; 
-  unsigned long int last = s+qtd-MAQ*s;
-  unsigned long int ss = s;
-  char c_pass[] = ".........."; 
-
-  for(j=0;j<MAQ-1;j++){
-  senha_pos(P_T,c_pass,s);
-  printf("%s\n",c_pass);
-  ss+=s;
-  }
-  return 0;
-  }*/
 
 char d[] = "./abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -120,10 +107,10 @@ void crack(char *initPa, char **pCrackL, char **saltL, int P_T, int D_T,int qtPC
             }
         }
     }
-    
-    //for(j=0;j<qtPCRACK;j++)printf("%s\n",saltL[j]);
 
     j=0;
+    struct crypt_data data;
+    data.initialized = 0; 
     while(j!=-1){    
         if(q==qtPCRACK)break;
         for(j = pass[P_T-1] ; j < D_T ; j++){ 
@@ -132,8 +119,7 @@ void crack(char *initPa, char **pCrackL, char **saltL, int P_T, int D_T,int qtPC
             for(k = P_T-1 ; k>=0 ; k--){
                 for(h = 0 ; h < qtPCRACK ; h++){
                     if(saltL[h][0]!='\0'){ 
-                            result = crypt(&c_pass[k], saltL[h]); 
-                            //printf("%s %s\n",result,pCrackL[h]);
+                            result = crypt_r(&c_pass[k], saltL[h],&data); 
                             ok = strcmp(result,pCrackL[h]);
                         if(!ok){
                             printf("%s %s\n",result,pCrackL[h]);
