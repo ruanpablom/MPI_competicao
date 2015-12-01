@@ -3,37 +3,28 @@
 #include <math.h>
 #define D_T 64
 
-int senha_pos(int i,char *passs);
+int senha_pos(int i, char *c_pass);
 
 int main(){
-    char passs[10];
-    senha_pos(10,passs);
-    printf("%s\n",passs);
+    char c_pass[] = "..........";
+    senha_pos(10,c_pass);
+    printf("%s\n",c_pass);
     return 0;
 }
 
-int senha_pos(int i,char *passs){
-    int j=0,flag=0;
+int senha_pos(int i, char *c_pass){
+    int j=0;
     int pass[i];
-    char c_pass[] = "..........";
     char d[] = "./abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    long pos_x,pos_xx,k=0;
-    int x = 0;
-    int y = D_T;
-    int s[i];
-    char t[] = "..........";
-    int r=0;
-    int pos_atual;
+    unsigned long pos_x,pos_aux;
 
     printf("Digite a posição da senha: ");
     scanf("%li",&pos_x);
     for(j=0;j<i;j++)pass[j]=0;
 
-    int beg = 0;
-    long pos_aux = pos_xx = pos_x;
-    int abc,first=1;
+    pos_aux =  pos_x;
 
-    while(1){
+    /*while(1){
         if((pos_aux/(D_T)) > 1 ){
             beg++;
         }
@@ -59,7 +50,9 @@ int senha_pos(int i,char *passs){
         if(beg==1)  pos_xx = pos_x - (D_T)*((int)(pos_x/(D_T))); 
         else pos_xx = pos_xx - pow((D_T-1),beg); 
         beg = 0;
-    }
+    }i*/
+    
+    int k,flag;
     while(j!=-1){ 
         for(j = 0 ; j < D_T ; j++){
             pass[i - 1] = j;
@@ -67,7 +60,7 @@ int senha_pos(int i,char *passs){
             k++;
             if(k == pos_x){
                 flag = 1;
-                memcpy(passs,c_pass,i);
+                //memcpy(passs,c_pass,i);
                 return 1;
                 break;
             }
@@ -90,5 +83,4 @@ int senha_pos(int i,char *passs){
     }
     //printf("%s\n",c_pass);
 
-    return 0;
 }
