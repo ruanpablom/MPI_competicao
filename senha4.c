@@ -54,20 +54,37 @@ int tP;
     return dados; 
 }*/
 
-PassSlice *initSlices(int nprocs){
-    PassSlice *result;
-    char *beg,*e;
+PassSlice *sliceAlloc(int nprocs){
+    PassSlice *result; 
+    result = (PassSlice*)malloc(nprocs*sizeof(PassSlice));
+    if(result==NULL)exit(0); 
+
+    return result;
+}
+
+void freeSlice(int nprocs, PassSlice *slices){
+	int i;
+	for(i=0;i<nprocs;i++){
+		free(slices[i].begin);
+		free(slices[i].end);
+		free(slices[i]);
+	}
+}
+
+PassSlice *initSlices(int nprocs,char *begin){
+    char *beg;
+    PassSlice *result; 
     long unsigned int qtTGen = lpow(T_D,tP);
     unsigned long int interv = qtTGen/nprocs;
     unsigned long int intervL= qtTGen - ((nprocs-1)*interv);
     int i;
 
-    result = (PassSlice*)malloc(nprocs*sizeof(PassSlice));
-    if(result==NULL)exit(0);
+    result = sliceAlloc(nprocs);
+
     beg = (char*)malloc((tP+1)*sizeof(char));
     if(beg==NULL)exit(0);
     beg[tP]='\0';
-    for(i=0;i<tP;i++)beg[i]=d[0];
+    memcpy(beg,beegin,sizeof(char)*(tP+1));
 
     result[0].interval = interv;
     result[0].tPass    = tP; 

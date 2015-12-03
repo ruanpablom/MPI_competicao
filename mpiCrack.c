@@ -64,16 +64,19 @@ int main(int argc, char **argv){
 			  printf("%s\n",slices[i].begin);
 			  printf("%s\n",slices[i].end);	
 			  }*/
-			for(j=1;j<size-1;j++){
+			for(j=1;j<size;j++){
 				MPI_Send(&TP,1,MPI_INT,i,2,MPI_COMM_WORLD);
-				MPI_Send(&slices[i].begin,TP,MPI_CHAR,i,0,MPI_COMM_WORLD);
+				MPI_Send(slices[i].begin,TP,MPI_CHAR,i,0,MPI_COMM_WORLD);
 				MPI_Send(&slices[i].interval,1,MPI_UNSIGNED_LONG,i,1,MPI_COMM_WORLD);
 			}
 			TP++;
 			setTP(TP);
 		}
+	} else {
+		MPI_Recv(&TP,1,MPI_INT,0,2,MPI_COMM_WORLD,&status);
+		MPI_Recv(slices[rank].begin,TP,MPI_CHAR,0,0,MPI_COMM_WORLD,&status);
+		MPI_Recv(&slices[rank].interval,1,MPI_UNSIGNED_LONG,0,1,MPI_COMM_WORLD,&status);
 	}
-	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Bcast (&qtPTC, 1, MPI_INT, 0, MPI_COMM_WORLD);	
 	if(rank!=0){
 		dados = (char*)malloc(qtPTC*(getTDes()+1)*sizeof(char));
@@ -81,9 +84,7 @@ int main(int argc, char **argv){
 		pCrackL = (char**)malloc(sizeof(char*)*(qtPTC+1));
 		if(pCrackL==NULL)exit(0);
 		for(i = 0 ; i < qtPTC ; i++)pCrackL[i]=&(dados[i*(getTDes()+1)]);
-		MPI_Recv(&TP,1,MPI_INT,0,2,MPI_COMM_WORLD,&status);
-		MPI_Recv(&slices[rank].begin,TP,MPI_CHAR,0,0,MPI_COMM_WORLD,&status);
-		MPI_Recv(&slices[rank].interval,1,MPI_UNSIGNED_LONG,0,1,MPI_COMM_WORLD,&status);
+	
 	}
 	//pCrackL=(char*)malloc(qtPTC*getTDes()*sizeof(char));
 	//MPI_Bcast (&qtPTC, 1, MPI_INT, 0, MPI_COMM_WORLD);
