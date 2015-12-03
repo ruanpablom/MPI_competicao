@@ -18,5 +18,7 @@ int crack(char *initPa, char **pCrackL, char **saltL, int qtPCRACK, int interval
 int getTDes();
 int getTS();
 int openMP(char **passwdsTC, char **saltFP, int qtPTC);
+int getTP();
+void setTP(int TP);
 
 #endif

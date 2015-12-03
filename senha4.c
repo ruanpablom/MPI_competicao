@@ -14,7 +14,7 @@
 char d[] = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 int tP;
 
-char *passwsToCrack(char *fileName,int qtWords, char *dados){
+/*char *passwsToCrack(char *fileName,int qtWords, char *dados){
     char **result;
     //char *dados;
     FILE *file;
@@ -34,9 +34,9 @@ char *passwsToCrack(char *fileName,int qtWords, char *dados){
     }
 
     return dados;
-}
+}*/
 
-char *saltsForPassws(char *passws, int qtPassws){
+/*char *saltsForPassws(char *passws, int qtPassws){
     char **result;
     char *dados;
     int i;
@@ -52,7 +52,7 @@ char *saltsForPassws(char *passws, int qtPassws){
     }
 
     return dados; 
-}
+}*/
 
 PassSlice *initSlices(int nprocs){
     PassSlice *result;
@@ -223,7 +223,7 @@ int crack(char *initPa, char **pCrackL, char **saltL, int qtPCRACK, int interval
 int openMP(char **passwdsTC, char **saltFP, int qtPTC){
     //char **passwdsTC;
     //char **saltFP;
-    //char *str;
+    char *str;
     //int qtPTC;
     int nProcs = omp_get_num_procs();
     PassSlice *slices;
@@ -259,9 +259,17 @@ int openMP(char **passwdsTC, char **saltFP, int qtPTC){
 }
 
 int getTDes(){
-    return T_D;
+    return T_DES;
 }
 
 int getTS(){
     return T_S;
+}
+
+int getTP(){
+	return tP;
+}
+
+void setTP(int TP){
+	tP = TP;
 }
