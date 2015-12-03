@@ -83,7 +83,7 @@ char **initPassInits(char *initP, char **initsV, long unsigned int qtPasss, int 
     memcpy(initsV[0],initP,sizeof(char)*(P_T+1));
     initsV[P_T]='\0';
 
-    for(i=1;i<nProcs-1;i++){
+    for(i=0;i<nProcs-1;i++){
         memcpy(initsV[i],senha_pos(P_T, initsV[i-1], sa, nProcs, D_T),sizeof(char)*(P_T+1));
     } 
     memcpy(initsV[nProcs-1], senha_pos(P_T, initsV[nProcs-2],qtPasss-(sa*(nProcs-1)), nProcs, D_T),sizeof(char)*(P_T+1));
@@ -115,12 +115,13 @@ void crack(char *initPa, char **pCrackL, char **saltL, int P_T, int D_T,int qtPC
         if(q==qtPCRACK)break;
         for(j = pass[P_T-1] ; j < D_T ; j++){ 
             pass[P_T-1] = j;
-            c_pass[P_T-1] = d[j];
+            c_pass[P_T-1] = d[j]; 
             for(k = P_T-1 ; k>=0 ; k--){
+                printf("%s\n",c_pass);
                 for(h = 0 ; h < qtPCRACK ; h++){
                     if(saltL[h][0]!='\0'){ 
-                            result = crypt_r(&c_pass[k], saltL[h],&data); 
-                            ok = strcmp(result,pCrackL[h]);
+                        result = crypt_r(&c_pass[k], saltL[h],&data); 
+                        ok = strcmp(result,pCrackL[h]);
                         if(!ok){
                             printf("%s %s\n",result,pCrackL[h]);
                             ok=1;

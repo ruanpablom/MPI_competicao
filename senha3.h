@@ -2,8 +2,8 @@
 #define SENHA3_h
 
 //Global variables
-int MAQ = 26;
-int P_T = 10;
+int MAQ = 4;
+int P_T = 1;
 int D_T = 64;
 int nCRACK = 30;
 
